@@ -16,7 +16,23 @@ const App: React.FC = () => {
       complete: false,
     };
 
+    if (tasks.find((task) => task.title === newTask.title)) {
+      throw new Error("Task already exists");
+    }
+
     setTasks([...tasks, newTask]);
+  };
+
+  const toggleTaskCompletion = (id: string): void => {
+    const taskToToggle: Task = tasks.find((task) => task.id === id) as Task;
+
+    if (!taskToToggle) return;
+
+    taskToToggle.complete = !taskToToggle.complete;
+
+    setTasks([...tasks]);
+
+    console.log(tasks);
   };
 
   return (
@@ -25,9 +41,15 @@ const App: React.FC = () => {
       <TaskForm onAddTask={addTask} />
       <div className="container">
         <p>Tasks: {tasks.length}</p>
-        <ul>
+        <ul className="task-list">
           {tasks.map((task) => (
-            <li key={task.id}>{`${task.title} - ${task.category}`}</li>
+            <li key={task.id} className={task.complete ? "task-complete" : ""}>
+              <span>{` ${task.title} - ${task.category}`}</span>
+              <input
+                type="checkbox"
+                onChange={() => toggleTaskCompletion(task.id)}
+              />
+            </li>
           ))}
         </ul>
       </div>
