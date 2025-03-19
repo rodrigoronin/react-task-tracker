@@ -1,6 +1,6 @@
 import { useState, FormEvent } from "react";
 
-interface FormProps {
+interface TaskFormProps {
   onAddTask: (task: {
     title: string;
     category: string;
@@ -8,7 +8,7 @@ interface FormProps {
   }) => void;
 }
 
-const TaskForm: React.FC<FormProps> = ({ onAddTask }) => {
+const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
   const [newTask, setNewTask] = useState({
     title: "",
     category: "",

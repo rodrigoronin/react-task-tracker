@@ -3,6 +3,14 @@ import TaskForm from "./components/TaskForm/TaskForm";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import "./App.css";
 
+interface Task {
+  id: string;
+  title: string;
+  category: string;
+  dueDate: string; // ISO 8601 international standard
+  complete: boolean;
+}
+
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -32,8 +40,6 @@ const App: React.FC = () => {
     taskToToggle.complete = !taskToToggle.complete;
 
     setTasks([...tasks]);
-
-    console.log(tasks);
   };
 
   const getCompletedTasks = (): number => {
