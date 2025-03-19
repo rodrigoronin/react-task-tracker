@@ -12,13 +12,43 @@ interface Task {
 }
 
 const App: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>([
+    {
+      id: "1",
+      title: "Learn React and TypeScript",
+      category: "learning",
+      dueDate: "2025-12-31",
+      complete: false,
+    },
+    {
+      id: "2",
+      title: "Build a project",
+      category: "project",
+      dueDate: "2025-12-31",
+      complete: false,
+    },
+    {
+      id: "3",
+      title: "Make a game",
+      category: "project",
+      dueDate: "2025-12-31",
+      complete: false,
+    },
+    {
+      id: "4",
+      title: "Publish a game",
+      category: "learning",
+      dueDate: "2025-12-31",
+      complete: false,
+    },
+  ]);
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   const addTask = (task: {
     title: string;
     category: string;
     dueDate: string;
-  }) => {
+  }): void => {
     const newTask: Task = {
       ...task,
       id: new Date().getTime().toString(),
@@ -30,6 +60,12 @@ const App: React.FC = () => {
     }
 
     setTasks([...tasks, newTask]);
+  };
+
+  const getTasksList = (): Task[] => {
+    if (!categoryFilter) return tasks;
+
+    return tasks.filter((task) => task.category === categoryFilter);
   };
 
   const toggleTaskCompletion = (id: string): void => {
@@ -49,14 +85,39 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>Task Tracker</h1>
+
       <TaskForm onAddTask={addTask} />
+
+      <div className="filter-tasks">
+        <span>Filter by category:</span>
+        <select
+          name="category-filter"
+          value={categoryFilter}
+          onChange={(e) => setCategoryFilter(e.target.value)}
+        >
+          <option value="">--- Choose a category to filter ----</option>
+          <option value="learning">Learning</option>
+          <option value="project">Project</option>
+        </select>
+        <button
+          onClick={() => {
+            setCategoryFilter("");
+          }}
+        >
+          Clear
+        </button>
+      </div>
+
       <div className="container">
         <ProgressBar completed={getCompletedTasks()} total={tasks.length} />
+
         <p>Tasks: {tasks.length}</p>
+
         <ul className="task-list">
-          {tasks.map((task) => (
+          {getTasksList().map((task) => (
             <li key={task.id} className={task.complete ? "task-complete" : ""}>
               <span>{` ${task.title} - ${task.category}`}</span>
+
               <input
                 type="checkbox"
                 onChange={() => toggleTaskCompletion(task.id)}

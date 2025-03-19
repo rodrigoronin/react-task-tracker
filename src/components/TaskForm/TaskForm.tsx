@@ -15,7 +15,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
     dueDate: "",
   });
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
     if (!newTask.title || !newTask.category || !newTask.dueDate) return;
 
