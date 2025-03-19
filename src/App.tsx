@@ -1,5 +1,6 @@
 import { useState } from "react";
-import TaskForm from "./components/TaskForm";
+import TaskForm from "./components/TaskForm/TaskForm";
+import ProgressBar from "./components/ProgressBar/ProgressBar";
 import "./App.css";
 
 const App: React.FC = () => {
@@ -35,11 +36,16 @@ const App: React.FC = () => {
     console.log(tasks);
   };
 
+  const getCompletedTasks = (): number => {
+    return tasks.filter((task) => task.complete === true).length;
+  };
+
   return (
     <div className="App">
       <h1>Task Tracker</h1>
       <TaskForm onAddTask={addTask} />
       <div className="container">
+        <ProgressBar completed={getCompletedTasks()} total={tasks.length} />
         <p>Tasks: {tasks.length}</p>
         <ul className="task-list">
           {tasks.map((task) => (
