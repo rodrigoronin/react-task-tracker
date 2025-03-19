@@ -34,12 +34,15 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
         placeholder="Task title"
       />
-      <input
-        type="text"
-        value={newTask.category}
+      <select
+        name="category"
+        id="category"
         onChange={(e) => setNewTask({ ...newTask, category: e.target.value })}
-        placeholder="Task category"
-      />
+      >
+        <option value="">--- Choose a category ---</option>
+        <option value="learning">Learning</option>
+        <option value="project">Project</option>
+      </select>
       <input
         type="date"
         value={newTask.dueDate}
