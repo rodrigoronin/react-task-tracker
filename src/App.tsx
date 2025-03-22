@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TaskForm from "./components/TaskForm/TaskForm";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import "./App.css";
@@ -12,36 +12,11 @@ interface Task {
 }
 
 const App: React.FC = () => {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: "1",
-      title: "Learn React and TypeScript",
-      category: "learning",
-      dueDate: "2025-12-31",
-      complete: false,
-    },
-    {
-      id: "2",
-      title: "Build a project",
-      category: "project",
-      dueDate: "2025-12-31",
-      complete: false,
-    },
-    {
-      id: "3",
-      title: "Make a game",
-      category: "project",
-      dueDate: "2025-12-31",
-      complete: false,
-    },
-    {
-      id: "4",
-      title: "Publish a game",
-      category: "learning",
-      dueDate: "2025-12-31",
-      complete: false,
-    },
-  ]);
+  const [tasks, setTasks] = useState<Task[]>(() => {
+   const savedTasks: [] = JSON.parse(localStorage.getItem('tasks') || '[]');
+
+   return Array.isArray(savedTasks) ? savedTasks : [];
+  });
   const [categoryFilter, setCategoryFilter] = useState("");
 
   const addTask = (task: {
@@ -55,14 +30,22 @@ const App: React.FC = () => {
       complete: false,
     };
 
-    if (tasks.find((task) => task.title === newTask.title)) {
+    if (tasks.length && tasks.find((task) => task.title === newTask.title)) {
       throw new Error("Task already exists");
     }
 
-    setTasks([...tasks, newTask]);
+    setTasks((prevTasks) => {
+      const updatedTasks: Task[] = [...prevTasks, newTask];
+      
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
+      return updatedTasks;
+    });
   };
 
   const getTasksList = (): Task[] => {
+    if (!tasks.length) return [];
+
     if (!categoryFilter) return tasks;
 
     return tasks.filter((task) => task.category === categoryFilter);
@@ -79,8 +62,18 @@ const App: React.FC = () => {
   };
 
   const getCompletedTasks = (): number => {
-    return tasks.filter((task) => task.complete === true).length;
+    if (!tasks.length) return 0;
+
+    return tasks.filter((task) => task.complete === true).length ?? [];
   };
+
+  useEffect(() => {
+    const savedTasks: string | null = localStorage.getItem('tasks');
+
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    }
+  }, []);
 
   return (
     <div className="App">
@@ -109,7 +102,7 @@ const App: React.FC = () => {
       </div>
 
       <div className="container">
-        <ProgressBar completed={getCompletedTasks()} total={tasks.length} />
+        <ProgressBar completed={getCompletedTasks()} total={tasks.length ?? 0} />
 
         <p>Tasks: {tasks.length}</p>
 
