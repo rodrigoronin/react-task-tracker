@@ -52,13 +52,26 @@ const App: React.FC = () => {
   };
 
   const toggleTaskCompletion = (id: string): void => {
-    const taskToToggle: Task = tasks.find((task) => task.id === id) as Task;
+    const taskToToggle: Task[] = tasks.map((task) => {
+      if (task.id === id) {
+        return {
+          ...task,
+          complete: !task.complete,
+        }
+      } else {
+        return task
+      }
+    }) as Task[];
 
-    if (!taskToToggle) return;
+    console.log(taskToToggle);
 
-    taskToToggle.complete = !taskToToggle.complete;
+    setTasks(() => {
+      const updatedTasks: Task[] = [...taskToToggle]
 
-    setTasks([...tasks]);
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
+      return updatedTasks;
+    });
   };
 
   const getCompletedTasks = (): number => {
