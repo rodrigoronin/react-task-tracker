@@ -1,4 +1,5 @@
 import { useState, FormEvent } from "react";
+import './index.css';
 
 interface TaskFormProps {
   onAddTask: (task: {
@@ -27,29 +28,34 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="task-form">
       <input
         type="text"
         value={newTask.title}
         onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
         placeholder="Task title"
+        className="title-input"
       />
       <select
         name="category"
         id="category"
         onChange={(e) => setNewTask({ ...newTask, category: e.target.value })}
+        className="category-input"
       >
-        <option value="">--- Choose a category ---</option>
+        <option value=""> --- Choose a category </option>
         <option value="learning">Learning</option>
         <option value="project">Project</option>
       </select>
-      <input
-        type="date"
-        value={newTask.dueDate}
-        onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
-        placeholder="Task title"
-      />
-      <button type="submit">Add</button>
+      <div className="flex-row-container">
+        <input
+          type="date"
+          value={newTask.dueDate}
+          onChange={(e) => setNewTask({ ...newTask, dueDate: e.target.value })}
+          placeholder="Task title"
+          className="date-input"
+        />
+        <button type="submit" className="add-task">New Task</button>
+      </div>
     </form>
   );
 };

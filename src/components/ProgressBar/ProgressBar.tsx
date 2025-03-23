@@ -9,7 +9,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ completed, total }) => {
   const percentage: number = total === 0 ? 0 : (completed / total) * 100;
 
   return (
-    <>
       <div className="progress-bar">
         <div
           className="progress-bar-fill"
@@ -17,11 +16,10 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ completed, total }) => {
             width: `${percentage}%`,
           }}
         ></div>
-        <span>
+        <span className="progress-bar-text">
           {`${completed} of ${total} tasks completed ${percentage.toFixed(0)}%`}
         </span>
       </div>
-    </>
   );
 };
 

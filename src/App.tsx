@@ -87,34 +87,41 @@ const App: React.FC = () => {
           name="category-filter"
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
+          className="category-filter"
         >
-          <option value="">--- Choose a category to filter ----</option>
+          <option value=""> --- </option>
           <option value="learning">Learning</option>
           <option value="project">Project</option>
         </select>
         <button
+          type="button"
           onClick={() => {
             setCategoryFilter("");
           }}
+          className="clear-filter"
         >
           Clear
         </button>
       </div>
 
-      <div className="container">
+      <div className="tasks-container">
         <ProgressBar completed={getCompletedTasks()} total={tasks.length ?? 0} />
 
         <p>Tasks: {tasks.length}</p>
 
         <ul className="task-list">
           {getTasksList().map((task) => (
-            <li key={task.id} className={task.complete ? "task-complete" : ""}>
-              <span>{` ${task.title} - ${task.category}`}</span>
-
-              <input
-                type="checkbox"
-                onChange={() => toggleTaskCompletion(task.id)}
-              />
+            <li key={task.id} className={`task-item ${task.complete ? "task-complete" : ""}`}>
+              <div className="task-details">
+                <input
+                  type="checkbox"
+                  checked={task.complete}
+                  onChange={() => toggleTaskCompletion(task.id)}
+                />
+                <span className="task-title">{task.title}</span>
+                <span className="task-category">{task.category}</span>
+                <span className="task-due-date">{task.dueDate}</span>
+              </div>
             </li>
           ))}
         </ul>
