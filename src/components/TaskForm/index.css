@@ -1,0 +1,50 @@
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  width: 100%;
+  margin: 2em 0;
+
+}
+
+.title-input, .category-input, .date-input{
+  font-size: 1em;
+  padding: 0.2em 0.4em;
+  color: rgba(51, 51, 51, 1);
+  border: 1px solid #ccc;
+  border-radius: 2px;
+
+  &:focus {
+    outline: none;
+    border-color: lightgreen;
+  }
+}
+
+.flex-row-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.add-task {
+  position: relative;
+  width: 10em;
+  height: 2.25em;
+  background-color: #4caf50;
+  color: #fff;
+  box-shadow: 0 3px 0 0 #276e2a;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, top 0.3s ease;
+
+  &:hover {
+    background-color: #388e3c;
+  }
+
+  &:active {
+    top: 2px;
+    box-shadow: none;
+  }
+}
+
