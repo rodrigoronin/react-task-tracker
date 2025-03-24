@@ -43,6 +43,18 @@ const App: React.FC = () => {
     });
   };
 
+  const deleteTask = (id: string) => {
+    if (!tasks.length) return;
+
+    const updatedTasks: Task[] = tasks.filter((task) => task.id !== id);
+
+    setTasks(() => {
+      localStorage.setItem('tasks', JSON.stringify(updatedTasks));
+
+      return updatedTasks;
+    });
+  }
+
   const getTasksList = (): Task[] => {
     if (!tasks.length) return [];
 
@@ -61,7 +73,7 @@ const App: React.FC = () => {
       } else {
         return task
       }
-    }) as Task[];
+    });
 
     console.log(taskToToggle);
 
@@ -134,6 +146,9 @@ const App: React.FC = () => {
                 <span className="task-title">{task.title}</span>
                 <span className="task-category">{task.category}</span>
                 <span className="task-due-date">{task.dueDate}</span>
+                <button type="button" onClick={() => deleteTask(task.id)} className="delete-task">
+                  Delete
+                </button>
               </div>
             </li>
           ))}
