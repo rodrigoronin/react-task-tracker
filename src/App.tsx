@@ -107,8 +107,11 @@ const App: React.FC = () => {
           className="category-filter"
         >
           <option value=""> --- </option>
-          <option value="learning">Learning</option>
-          <option value="project">Project</option>
+          <option value="Study">Study</option>
+          <option value="Work">Work</option>
+          <option value="Workouts">Workouts</option>
+          <option value="Projects">Projects</option>
+          <option value="Leisure">Leisure</option>
         </select>
         <button
           type="button"
