@@ -18,7 +18,16 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
 
   const handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    if (!newTask.title || !newTask.category || !newTask.dueDate) return;
+
+    if (!newTask.title) return;
+
+    if (!newTask.category) {
+      newTask.category = "uncategorized";
+    }
+
+    if (!newTask.dueDate) {
+      newTask.dueDate = new Date().toISOString().split("T")[0];
+    }
 
     onAddTask({
       title: newTask.title,
@@ -43,8 +52,11 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
         className="category-input"
       >
         <option value=""> --- Choose a category </option>
-        <option value="learning">Learning</option>
-        <option value="project">Project</option>
+          <option value="Study">Study</option>
+          <option value="Work">Work</option>
+          <option value="Workouts">Workouts</option>
+          <option value="Projects">Projects</option>
+          <option value="Leisure">Leisure</option>
       </select>
       <div className="flex-row-container">
         <input

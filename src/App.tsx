@@ -1,15 +1,9 @@
 import { useState, useEffect } from "react";
 import TaskForm from "./components/TaskForm/TaskForm";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
-import "./App.css";
+import TaskList from "./components/TaskList/TaskList";
 
-interface Task {
-  id: string;
-  title: string;
-  category: string;
-  dueDate: string; // ISO 8601 international standard
-  complete: boolean;
-}
+import "./App.css";
 
 const App: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>(() => {
@@ -30,7 +24,7 @@ const App: React.FC = () => {
       complete: false,
     };
 
-    if (tasks.length && tasks.find((task) => task.title === newTask.title)) {
+    if (tasks.length && tasks.find((task) => (task.title === newTask.title && task.category === newTask.category))) {
       throw new Error("Task already exists");
     }
 
@@ -75,8 +69,6 @@ const App: React.FC = () => {
       }
     });
 
-    console.log(taskToToggle);
-
     setTasks(() => {
       const updatedTasks: Task[] = [...taskToToggle]
 
@@ -115,8 +107,11 @@ const App: React.FC = () => {
           className="category-filter"
         >
           <option value=""> --- </option>
-          <option value="learning">Learning</option>
-          <option value="project">Project</option>
+          <option value="Study">Study</option>
+          <option value="Work">Work</option>
+          <option value="Workouts">Workouts</option>
+          <option value="Projects">Projects</option>
+          <option value="Leisure">Leisure</option>
         </select>
         <button
           type="button"
@@ -134,25 +129,8 @@ const App: React.FC = () => {
 
         <p>Tasks: {tasks.length}</p>
 
-        <ul className="task-list">
-          {getTasksList().map((task) => (
-            <li key={task.id} className={`task-item ${task.complete ? "task-complete" : ""}`}>
-              <div className="task-details">
-                <input
-                  type="checkbox"
-                  checked={task.complete}
-                  onChange={() => toggleTaskCompletion(task.id)}
-                />
-                <span className="task-title">{task.title}</span>
-                <span className="task-category">{task.category}</span>
-                <span className="task-due-date">{task.dueDate}</span>
-                <button type="button" onClick={() => deleteTask(task.id)} className="delete-task">
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <TaskList tasks={getTasksList} toggleTaskCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
+
       </div>
     </div>
   );
