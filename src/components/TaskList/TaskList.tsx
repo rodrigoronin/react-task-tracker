@@ -13,23 +13,21 @@ type DeleteTask = {
 }
 
 const TaskList = (
-    {getTasksList, toggleTaskCompletion, deleteTask}:
-    {getTasksList: GetTasksList, toggleTaskCompletion: ToggleTaskCompletion, deleteTask: DeleteTask}
+    {tasks, toggleTaskCompletion, deleteTask}:
+    {tasks: GetTasksList, toggleTaskCompletion: ToggleTaskCompletion, deleteTask: DeleteTask}
   ) => {
 
-  const categoriesList: string[] = ['Study', 'Work', 'Workouts', 'Projects', 'Leisure'];
-
-  const categoriesSet = new Set(getTasksList().map((task) => task.category));
+  const categoriesSet = new Set(tasks().map((task: Task) => task.category));
   const uniqueCategories = Array.from(categoriesSet);
 
   return (
     <>
-      {categoriesList.map((category) => (
+      {uniqueCategories.map((category: string) => (
         <>
           <span>{`- ${category}`}</span>
 
           <ul className="task-list">
-            {getTasksList().filter((task) => task.category === category).map((task) => (
+            {tasks().filter((task) => task.category === category).map((task) => (
               <>
                 <li key={task.id} className={`task-item ${task.complete ? "task-complete" : ""}`}>
                   <div className="task-details">

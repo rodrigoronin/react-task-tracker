@@ -24,7 +24,7 @@ const App: React.FC = () => {
       complete: false,
     };
 
-    if (tasks.length && tasks.find((task) => task.title === newTask.title)) {
+    if (tasks.length && tasks.find((task) => (task.title === newTask.title && task.category === newTask.category))) {
       throw new Error("Task already exists");
     }
 
@@ -129,7 +129,7 @@ const App: React.FC = () => {
 
         <p>Tasks: {tasks.length}</p>
 
-        <TaskList getTasksList={getTasksList} toggleTaskCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
+        <TaskList tasks={getTasksList} toggleTaskCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
 
       </div>
     </div>
