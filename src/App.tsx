@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import TaskForm from "./components/TaskForm/TaskForm";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import TaskList from "./components/TaskList/TaskList";
@@ -11,6 +11,7 @@ const App: React.FC = () => {
 
    return Array.isArray(savedTasks) ? savedTasks : [];
   });
+
   const [categoryFilter, setCategoryFilter] = useState("");
 
   const addTask = (task: {
@@ -49,13 +50,13 @@ const App: React.FC = () => {
     });
   }
 
-  const getTasksList = (): Task[] => {
+  const filteredTasks = useMemo(() => { 
     if (!tasks.length) return [];
 
     if (!categoryFilter) return tasks;
 
     return tasks.filter((task) => task.category === categoryFilter);
-  };
+  }, [tasks, categoryFilter]);
 
   const toggleTaskCompletion = (id: string): void => {
     const taskToToggle: Task[] = tasks.map((task) => {
@@ -128,7 +129,7 @@ const App: React.FC = () => {
         <ProgressBar completed={getCompletedTasks()} total={tasks.length ?? 0} />
 
 
-        <TaskList tasks={getTasksList} toggleTaskCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
+        <TaskList tasks={filteredTasks} toggleTaskCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
 
       </div>
     </div>
