@@ -1,52 +1,43 @@
+import { useMemo } from 'react';
+import { TaskItem } from './TaskItem';
 import './index.css';
 
-type GetTasksList = {
-  (): Task[];
-}
-
-type ToggleTaskCompletion = {
-  (id: string): void;
-}
-
-type DeleteTask = {
-  (id: string): void;
-}
 
 const TaskList = (
     {tasks, toggleTaskCompletion, deleteTask}:
     {tasks: GetTasksList, toggleTaskCompletion: ToggleTaskCompletion, deleteTask: DeleteTask}
   ) => {
 
-  const categoriesSet = new Set(tasks().map((task: Task) => task.category));
-  const uniqueCategories = Array.from(categoriesSet);
+  const tasksList: Task[] = useMemo(() => tasks(), [tasks]);
+
+  const getUniqueCategories = useMemo(() => (): string[] => {
+    const categoriesSet = new Set(tasks().map((task: Task) => task.category));
+    const uniqueCategories = Array.from(categoriesSet);
+
+    return uniqueCategories;
+  }, [tasks]);
+
+  const getTasksByCategory = (category: string): Task[] => {
+    return tasksList.filter((task) => task.category === category);
+  }
 
   return (
     <>
-      {uniqueCategories.map((category: string) => (
-        <>
-          <span>{`- ${category}`}</span>
+      {getUniqueCategories().map((category: string) => (
+        <section key={category}>
+          <h3>{`${category}`}</h3>
 
           <ul className="task-list">
-            {tasks().filter((task) => task.category === category).map((task) => (
-              <>
-                <li key={task.id} className={`task-item ${task.complete ? "task-complete" : ""}`}>
-                  <div className="task-details">
-                    <input
-                      type="checkbox"
-                      checked={task.complete}
-                      onChange={() => toggleTaskCompletion(task.id)}
-                    />
-                    <span className="task-title">{task.title}</span>
-                    <span className="task-due-date">{task.dueDate}</span>
-                    <button type="button" onClick={() => deleteTask(task.id)} className="delete-task">
-                      Delete
-                    </button>
-                  </div>
-                </li>
-              </>
+            {getTasksByCategory(category).map((task: Task) => (
+              <TaskItem
+                key={task.id}
+                task={task}
+                onDeleteTask={deleteTask}
+                onToggleCompletion={toggleTaskCompletion}
+              />
             ))}
           </ul>
-        </>
+        </section>
       ))}
     </>
   )

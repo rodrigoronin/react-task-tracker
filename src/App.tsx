@@ -127,7 +127,6 @@ const App: React.FC = () => {
       <div className="tasks-container">
         <ProgressBar completed={getCompletedTasks()} total={tasks.length ?? 0} />
 
-        <p>Tasks: {tasks.length}</p>
 
         <TaskList tasks={getTasksList} toggleTaskCompletion={toggleTaskCompletion} deleteTask={deleteTask} />
 

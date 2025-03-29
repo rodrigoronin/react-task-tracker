@@ -22,7 +22,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
     if (!newTask.title) return;
 
     if (!newTask.category) {
-      newTask.category = "uncategorized";
+      newTask.category = "Uncategorized";
     }
 
     if (!newTask.dueDate) {
